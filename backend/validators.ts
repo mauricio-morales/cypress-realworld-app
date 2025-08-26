@@ -116,3 +116,24 @@ export const isValidEntityValidator = [
     ])
     .trim(),
 ];
+
+export const isLoanPaymentValidator = [
+  body("amount")
+    .isNumeric()
+    .toInt()
+    .custom((value) => value > 0),
+  body("interestPortion")
+    .isNumeric()
+    .toInt()
+    .custom((value) => value > 0),
+  body("principalPortion")
+    .isNumeric()
+    .toInt()
+    .custom((value) => value > 0),
+  body().custom((value) => {
+    if (value.interestPortion + value.principalPortion !== value.amount) {
+      throw new Error("Interest and principal portions must sum to the total amount");
+    }
+    return true;
+  }),
+];

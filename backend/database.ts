@@ -49,6 +49,7 @@ import {
 } from "../src/models";
 import Fuse from "fuse.js";
 import {
+  Loan,
   isPayment,
   getTransferAmount,
   hasSufficientFunds,
@@ -75,6 +76,7 @@ export type TDatabase = {
   comments: Comment[];
   notifications: NotificationType[];
   banktransfers: BankTransfer[];
+  loans: Loan[];
 };
 
 const USER_TABLE = "users";
@@ -85,6 +87,7 @@ const LIKE_TABLE = "likes";
 const COMMENT_TABLE = "comments";
 const NOTIFICATION_TABLE = "notifications";
 const BANK_TRANSFER_TABLE = "banktransfers";
+const LOAN_TABLE = "loans";
 
 const databaseFile = path.join(__dirname, "../data/database.json");
 const adapter = new FileSync<DbSchema>(databaseFile);
@@ -844,6 +847,16 @@ export const getNotificationById = (id: string): NotificationType => getNotifica
 
 /* istanbul ignore next */
 export const getNotificationsByUserId = (userId: string) => getNotificationsByObj({ userId });
+
+// Loans
+export const getLoanBy = (key: string, value: any) => getBy(LOAN_TABLE, key, value);
+export const getLoanById = (id: string) => getLoanBy("id", id);
+
+export const updateLoanById = (loanId: string, edits: Partial<Loan>) => {
+  const loan = getLoanById(loanId);
+
+  db.get(LOAN_TABLE).find(loan).assign(edits).write();
+};
 
 /* istanbul ignore next */
 export const getBankTransferByTransactionId = (transactionId: string) =>

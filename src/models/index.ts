@@ -3,6 +3,7 @@ export * from "./bankaccount";
 export * from "./contact";
 export * from "./transaction";
 export * from "./like";
+export * from "./loan";
 export * from "./comment";
 export * from "./notification";
 export * from "./banktransfer";
